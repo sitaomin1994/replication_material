@@ -48,7 +48,7 @@ source .venv/Scripts/activate
 Step 3: Install required packages:
 
 ```bash
-pip install -r requirements.txt
+pip install --no-cache-dir -r requirements.txt
 pip install fedimpute==0.2.7
 ```
 
