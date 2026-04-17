@@ -49,7 +49,6 @@ Step 3: Install required packages:
 
 ```bash
 pip install -r requirements.txt
-pip install torch==2.9.1 --index-url https://download.pytorch.org/whl/cpu
 pip install fedimpute==0.2.7
 ```
 
