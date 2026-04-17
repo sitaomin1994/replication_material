@@ -14,7 +14,6 @@ COPY requirements.txt .
 
 # Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install torch==2.9.1 --index-url https://download.pytorch.org/whl/cpu
 RUN pip install fedimpute==0.2.7
 
 # Copy all project files
