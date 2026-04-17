@@ -3,5 +3,5 @@
 .logs/
 logs/
 logs_archived/
-plots/
+plots/*
 __pycache__/
