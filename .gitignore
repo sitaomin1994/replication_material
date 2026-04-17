@@ -1,0 +1,6 @@
+.venv/
+.venvl/
+.logs/
+logs/
+logs_archived/
+__pycache__/
