@@ -48,8 +48,9 @@ source .venv/Scripts/activate
 Step 3: Install required packages:
 
 ```bash
+python -m pip install --upgrade pip setuptools wheel
 pip install --no-cache-dir -r requirements.txt
-pip install fedimpute==0.2.7
+pip install --no-cache-dir fedimpute==0.2.7
 ```
 
 Step 4: Run the scripts:

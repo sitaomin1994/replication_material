@@ -1,23 +1,33 @@
-# Use exact Python version for reproducibility
-FROM python:3.12.3
+# Use an explicit Debian-based Python image and a fixed target platform for better cross-machine consistency.
+FROM --platform=linux/amd64 python:3.12.3-bookworm
 
-# Set environment variables for reproducibility
-ENV PYTHONHASHSEED=0
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# Runtime settings to reduce sources of nondeterminism in Python and numeric libraries.
+ENV PYTHONHASHSEED=0 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    OMP_NUM_THREADS=1 \
+    OPENBLAS_NUM_THREADS=1 \
+    MKL_NUM_THREADS=1 \
+    NUMEXPR_NUM_THREADS=1 \
+    VECLIB_MAXIMUM_THREADS=1 \
+    BLIS_NUM_THREADS=1
 
-# Set working directory
 WORKDIR /app
 
-# Copy requirements file first (for better Docker layer caching)
-COPY requirements.txt .
+# Copy requirements first for better layer reuse.
+COPY requirements.txt ./
 
-# Install Python packages
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install fedimpute==0.2.7
+# Upgrade packaging tools, then install dependencies.
+RUN python -m pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir fedimpute==0.2.7
 
-# Copy all project files
+# Copy all project files.
 COPY . .
 
-# # Default command (you can override this when running)
-# CMD ["python", "basic_usage.py"]
+# Ensure log directory exists for tee output.
+RUN mkdir -p /app/logs
+
+# Default command can still be overridden by docker run.
+# CMD ["python", "scripts/basic_usage.py"]
