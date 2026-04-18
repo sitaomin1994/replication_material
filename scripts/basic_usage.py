@@ -11,6 +11,7 @@ import os
 random.seed(42)
 np.random.seed(42)
 os.environ['PYTHONHASHSEED'] = '0'
+GLOBAL_SEED = 100330201
 
 
 # %% [markdown]
@@ -31,7 +32,7 @@ from fedimpute.scenario import ScenarioBuilder
 scenario_builder = ScenarioBuilder()
 scenario_data = scenario_builder.create_simulated_scenario(
     data, data_config, num_clients = 4, dp_strategy='iid-even', 
-    ms_scenario='mnar-heter'
+    ms_scenario='mnar-heter', seed=GLOBAL_SEED
 )
 print('Results Structure (Dict Keys):')
 print(list(scenario_data.keys()))
@@ -77,7 +78,12 @@ print("Running federated imputation...")
 from fedimpute.execution_environment import FedImputeEnv
 
 env = FedImputeEnv(debug_mode=False)
-env.configuration(imputer = 'mice', fed_strategy='fedmice')
+env.configuration(
+    imputer = 'mice',
+    fed_strategy='fedmice',
+    workflow_params={'imp_iterations': 10, 'early_stopping': False},
+    seed=GLOBAL_SEED
+)
 env.setup_from_scenario_builder(
     scenario_builder = scenario_builder, verbose=1)
 env.show_env_info()

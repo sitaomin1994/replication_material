@@ -9,6 +9,7 @@ import os
 random.seed(42)
 np.random.seed(42)
 os.environ['PYTHONHASHSEED'] = '0'
+GLOBAL_SEED = 100330201
 
 # %% [markdown]
 # # Load Data
@@ -19,6 +20,7 @@ data, data_config = load_data("fed_heart_disease")
 scenario_builder = ScenarioBuilder()
 scenario_data = scenario_builder.create_real_scenario(
     data, data_config,
+    seed=GLOBAL_SEED,
 )
 scenario_builder.summarize_scenario()
 scenario_builder.visualize_missing_pattern(
@@ -34,7 +36,16 @@ from fedimpute.execution_environment import FedImputeEnv
 
 print("Running federated imputation...")
 env = FedImputeEnv(debug_mode=False)
-env.configuration(imputer = 'mice', fed_strategy='fedmice', workflow_params = {'early_stopping_metric': 'loss'})
+env.configuration(
+    imputer='mice',
+    fed_strategy='fedmice',
+    workflow_params={
+        'imp_iterations': 10,
+        'early_stopping': False,
+        'early_stopping_metric': 'loss',
+    },
+    seed=GLOBAL_SEED,
+)
 env.setup_from_scenario_builder(scenario_builder = scenario_builder, verbose=1)
 env.show_env_info()
 env.run_fed_imputation(verbose=1)

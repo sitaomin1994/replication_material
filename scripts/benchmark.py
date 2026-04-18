@@ -9,6 +9,7 @@ import os
 random.seed(42)
 np.random.seed(42)
 os.environ['PYTHONHASHSEED'] = '0'
+GLOBAL_SEED = 100330201
 
 # %% [markdown]
 # # Load Data and Scenario
@@ -21,7 +22,12 @@ print("Data Config:\n", data_config)
 from fedimpute.scenario import ScenarioBuilder
 scenario_builder = ScenarioBuilder()
 scenario_data = scenario_builder.create_simulated_scenario(
-    data, data_config, num_clients = 4, dp_strategy='iid-even', ms_scenario='mnar-heter'
+    data,
+    data_config,
+    num_clients=4,
+    dp_strategy='iid-even',
+    ms_scenario='mnar-heter',
+    seed=GLOBAL_SEED,
 )
 scenario_builder.summarize_scenario()
 
