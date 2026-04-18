@@ -53,6 +53,11 @@ pip install --no-cache-dir -r requirements.txt
 pip install --no-cache-dir fedimpute==0.2.7
 ```
 
+OMP_NUM_THREADS: "1"
+OPENBLAS_NUM_THREADS: "1"
+MKL_NUM_THREADS: "1"
+NUMEXPR_NUM_THREADS: "1"
+
 Step 4: Run the scripts:
 
 ```bash
